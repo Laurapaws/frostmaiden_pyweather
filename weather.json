@@ -1,0 +1,124 @@
+{
+    "weather": {
+        "1": {
+            "name": "Clear Skies",
+            "effects": ["[No Wind] -50°F", "Dim Natural Light from: Moon / Aurora / Twilight", "Disadvantage on [Sight] Perception Checks. ]"],
+            "calming1": "Light Cloud Coverage",
+            "worsening1": "Light Snow Dusting",
+            "worsening2": "Extreme Fog",
+            "lengthdice": 4,
+            "lengthcount": 2,
+            "roll": 1
+        },
+        "2": {
+            "name": "Light Cloud Coverage",
+            "effects": [],
+            "calming1": "Clear Skies",
+            "worsening1": "Overcast",
+            "worsening2": "Light Snow Dusting",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 2
+        },
+        "3": {
+            "name": "Overcast",
+            "effects": "effects",
+            "calming1": "Light Cloud Coverage",
+            "worsening1": "Storm Clouds",
+            "worsening2": "Hail Storm",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 3
+        },
+        "4": {
+            "name": "Storm Clouds",
+            "effects": "effects",
+            "calming1": "Overcast",
+            "worsening1": "Heavy Snowfall",
+            "worsening2": "Lightning Storm",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 4
+        },
+        "5": {
+            "name": "Light Snow Dusting",
+            "effects": "effects",
+            "calming1": "Light Cloud Coverage",
+            "worsening1": "Heavy Snowfall",
+            "worsening2": "Lightning Storm",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 5
+        },
+        "6": {
+            "name": "Heavy Snowfall",
+            "effects": "effects",
+            "calming1": "Overcast",
+            "worsening1": "Blizzard",
+            "worsening2": "Hail Storm",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 6
+        },
+        "7": {
+            "name": "Blizzard",
+            "effects": "effects",
+            "calming1": "Storm Clouds",
+            "worsening1": "Heavy Snowfall",
+            "worsening2": "White Out",
+            "lengthdice": 4,
+            "lengthcount": 2,
+            "roll": 7
+        },
+        "8": {
+            "name": "White Out",
+            "effects": "effects",
+            "calming1": "Light Snow Dusting",
+            "worsening1": "Heavy Snowfall",
+            "worsening2": "Blizzard",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 8
+        },
+        "9": {
+            "name": "Extreme Fog",
+            "effects": "effects",
+            "calming1": "Clear Skies",
+            "worsening1": "Light Snow Dusting",
+            "worsening2": "Wind Vortex",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 9
+        },
+        "10": {
+            "name": "Lightning Storm",
+            "effects": "effects",
+            "calming1": "Storm Clouds",
+            "worsening1": "Light Snow Dusting",
+            "worsening2": "Heavy Snowfall",
+            "lengthdice": 4,
+            "lengthcount": 2,
+            "roll": 10
+        },
+        "11": {
+            "name": "Hail Storm",
+            "effects": "effects",
+            "calming1": "Overcast",
+            "worsening1": "Heavy Snowfall",
+            "worsening2": "Blizzard",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 11
+        },
+        "12": {
+            "name": "Wind Vortex",
+            "effects": "effects",
+            "calming1": "Clear Skies",
+            "worsening1": "Clear Skies",
+            "worsening2": "Clear Skies",
+            "lengthdice": 4,
+            "lengthcount": 1,
+            "roll": 12
+        }
+    }
+}

@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "frostmaiden-pyweather"
+version = "0.1.0"
+description = "A tool to work out the weather day-by-day in Icewind Dale: Rime of the Frostmaiden"
+authors = ["Ashy"]
+readme = "README.md"
+packages = [{include = "frostmaiden_pyweather"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.19.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
