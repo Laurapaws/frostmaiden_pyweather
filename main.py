@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import Counter
 
-SEED = "boop!"
+SEED = "bo2223425op!"
 WEATHER_DATA = "weather.json"
 
 dice = random.Random(SEED)
@@ -26,7 +26,7 @@ def populate_weather_object(current_weather_object, weather_roll):
 
     Args:
         current_weather_object (Weather Object): The current blank weather object 
-        previous_weather_roll (int): The dice roll/JSON value of the weather to populate with
+        weather_roll (int): The dice roll/JSON value of the weather to populate with
 
     Returns:
         Weather Object: The fully populated weather object from the selected JSON in WEATHER_DATA
@@ -112,18 +112,20 @@ def next_weather(weather):
         
     return new_weather
             
-def print_weather(weather):
+def print_weather(weather, effects):
     """Prints the current weather to the console including name, duration, and effects of the weather.
 
     Args:
         weather (Weather Object): A populated weather object
+        effects (bool): True will generate effects in the printout, False will not
     """
     
     print(f"Weather: {weather.name}")
     print(f"Duration: {str(weather.duration)} hours")
-    print(f"Effects: ")
-    for effect in weather.effects:
-        print(effect)
+    if effects == True:
+        print(f"Effects: ")
+        for effect in weather.effects:
+            print(effect)
 
 def weather_sample():
     """Creates a sample set of weather as well as two rolls of weather afterwards
@@ -176,9 +178,49 @@ def print_stats():
     text_stats(weather_list)
     
 def calculate_day(day_length):
-    long_rest()
-    
-calculate_day(24)
+    """Creates a set of weather objects spanning day_length hours. Removes the remainder time from the end of the final weather.
 
+    Args:
+        day_length (int): The length of your day in hours
+
+    Returns:
+        _type_: A list of weather objects that span day_length hours in duration.
+    """
+    
+    hour_tracker = 0    
+    weather_list = []
+    
+    starting_weather = long_rest()
+    weather_list.append(starting_weather)
+    hour_tracker = hour_tracker + starting_weather.duration
+    new_weather = next_weather(starting_weather)
+    hour_tracker = hour_tracker + new_weather.duration
+    weather_list.append(new_weather)
+    
+    while hour_tracker < day_length:
+        hour_tracker = hour_tracker + new_weather.duration
+        new_weather = next_weather(new_weather)
+        weather_list.append(new_weather)
+        
+    if hour_tracker > day_length:
+        remainder_hours = hour_tracker - day_length
+        weather_list[-1].duration = 1+ (weather_list[-1].duration - remainder_hours)
+        
+        
+        if weather_list[-1].duration == 0:
+            del weather_list[-1]
+
+    return weather_list
+
+    
+    
+todays_weather = calculate_day(24)
+
+for x in todays_weather:
+    print("")
+    print("")
+    print_weather(x, effects=False)
+
+#print("lol")
 
 #print_stats()
