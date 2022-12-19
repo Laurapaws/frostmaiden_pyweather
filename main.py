@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import Counter
 
-SEED = "cseff324"
+SEED = "cheesey"
 WEATHER_DATA = "weather.json"
 
 dice = random.Random(SEED)
@@ -98,37 +98,40 @@ def weather_sample():
     even_newer = next_weather(new_weather)
     print_weather(even_newer)
 
-weather_list = []
-
-# weather_now = long_rest()
-
-weather_sample()
-
-# runs = 100000
-# print(f"{runs} iterations")
-
-# for x in range(runs):
-#     #print_weather(weather_now)
-#     #print("--------------------------")
+def print_stats():
+    # A little function for investigating the weather stats
     
-#     weather_list.append(weather_now.name)
-    
-#     weather_now = next_weather(weather_now)
+    weather_list = []
+    weather_now = long_rest()
+    runs = 10000
+    print(f"{runs} iterations")
 
+    for x in range(runs):
+        #print_weather(weather_now)
+        #print("--------------------------")
+        weather_list.append(weather_now.name)
+        weather_now = next_weather(weather_now)
 
-# c = Counter(weather_list)
-# a = c.keys() 
-# b = c.values() 
-# for dict_item in c:
-#     stat = 100 * (c[dict_item] / runs)
-#     stat = round(stat, 1)
-#     print(f"{dict_item}: {stat}%")
+    def text_stats(weather_list):
+        c = Counter(weather_list)
+        a = c.keys() 
+        b = c.values() 
+        for dict_item in c:
+            stat = 100 * (c[dict_item] / runs)
+            stat = round(stat, 1)
+            print(f"{dict_item}: {stat}%")
 
+    def graph_stats(weather_list):
+        weather_list_unique = list(set(weather_list))
+        counts = [weather_list.count(value) for value in weather_list_unique]
+        barcontainer = plt.bar(range(len(weather_list_unique)),counts)
+        plt.bar_label(barcontainer,weather_list_unique, label_type='edge')
+        plt.axis('off')
+        plt.show()
 
-# weather_list_unique = list(set(weather_list))
-# counts = [weather_list.count(value) for value in weather_list_unique]
-# barcontainer = plt.bar(range(len(weather_list_unique)),counts)
-# plt.bar_label(barcontainer,weather_list_unique, label_type='edge')
-# plt.axis('off')
-# plt.show()
+    text_stats(weather_list)
+    # graph_stats(weather_list)
 
+# weather_sample()
+
+print_stats()
