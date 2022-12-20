@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import Counter
 
-SEED = "bo2223425op!"
+SEED = "co34c32k!"
 WEATHER_DATA = "weather.json"
 
 dice = random.Random(SEED)
 weather_data = json.load(open(WEATHER_DATA))
 
 class Weather():
-    def __init__(self, name=None, effects=None, calming1=None, calming2=None, worsening1=None, worsening2=None, duration=None, roll=None):
+    def __init__(self, name=None, effects=None, calming1=None, calming2=None, worsening1=None, worsening2=None, duration=None, start_time=None, end_time=None, roll=None):
         self.name = name
         self.effects = effects
         self.calming1 = calming1
@@ -19,6 +19,8 @@ class Weather():
         self.worsening1 = worsening1
         self.worsening2 = worsening2
         self.duration = duration
+        self.start_time = start_time
+        self.end_time = end_time
         self.roll = roll
 
 def populate_weather_object(current_weather_object, weather_roll):
@@ -112,21 +114,24 @@ def next_weather(weather):
         
     return new_weather
             
-def print_weather(weather, effects):
+def print_weather(weather, effects, clock):
     """Prints the current weather to the console including name, duration, and effects of the weather.
 
     Args:
         weather (Weather Object): A populated weather object
         effects (bool): True will generate effects in the printout, False will not
+        clock (bool): True will generate 24hr times around the clock. False will not
     """
     
     print(f"Weather: {weather.name}")
     print(f"Duration: {str(weather.duration)} hours")
+    if clock == True:
+        print(f"{weather.start_time}:00 - {weather.end_time}:00")
     if effects == True:
         print(f"Effects: ")
         for effect in weather.effects:
             print(effect)
-
+    
 def weather_sample():
     """Creates a sample set of weather as well as two rolls of weather afterwards
     """
@@ -178,7 +183,7 @@ def print_stats():
     text_stats(weather_list)
     
 def calculate_day(day_length):
-    """Creates a set of weather objects spanning day_length hours. Removes the remainder time from the end of the final weather.
+    """Creates a set of weather objects spanning day_length hours. Checks to make sure the final weather object doesn't go past day_length and shortens if so.
 
     Args:
         day_length (int): The length of your day in hours
@@ -193,33 +198,69 @@ def calculate_day(day_length):
     starting_weather = long_rest()
     weather_list.append(starting_weather)
     hour_tracker = hour_tracker + starting_weather.duration
+    
     new_weather = next_weather(starting_weather)
-    hour_tracker = hour_tracker + new_weather.duration
     weather_list.append(new_weather)
+    hour_tracker = hour_tracker + new_weather.duration
     
     while hour_tracker < day_length:
-        hour_tracker = hour_tracker + new_weather.duration
         new_weather = next_weather(new_weather)
+        
+        if (new_weather.duration + hour_tracker) > day_length:
+            remainder_duration = day_length - hour_tracker
+            new_weather.duration = remainder_duration
+        elif hour_tracker == day_length:
+            return
+            
         weather_list.append(new_weather)
-        
-    if hour_tracker > day_length:
-        remainder_hours = hour_tracker - day_length
-        weather_list[-1].duration = 1+ (weather_list[-1].duration - remainder_hours)
-        
-        
-        if weather_list[-1].duration == 0:
-            del weather_list[-1]
+        hour_tracker = hour_tracker + new_weather.duration
 
     return weather_list
 
+def populate_times(weather_list, current_time, day_length):
+    """Sets up the start and end times of each weather.
+
+    Args:
+        weather_list (List): A list of Weather objects
+        current_time (int): The time of day you want to start at in hours
+        day_length (int): The length of the day in hours
+
+    Returns:
+        List: A list of Weather objects
+    """
+        
+    weather_list[0].start_time = current_time
     
+    if (current_time + weather_list[0].duration) >= day_length:
+        weather_list[0].end_time = (weather_list[0].duration - (day_length - current_time))
+        current_time = weather_list[0].end_time
+    else:
+        weather_list[0].end_time = current_time + weather_list[0].duration
+        current_time = weather_list[0].end_time
+        
+    for idx, weather_object in enumerate(weather_list):
+        if idx != 0:
+            if (current_time + weather_object.duration) >= day_length:
+                weather_object.start_time = weather_list[idx-1].end_time
+                weather_object.end_time = (weather_object.duration - (day_length - current_time))
+                current_time = weather_object.end_time
+            else:
+                weather_object.start_time = weather_list[idx-1].end_time
+                weather_object.end_time = current_time + weather_object.duration
+                current_time = weather_object.end_time
+    
+    return weather_list
+        
     
 todays_weather = calculate_day(24)
 
+todays_weather = populate_times(todays_weather, 9, 24)
+
 for x in todays_weather:
+    print("----------------------")
+    print_weather(x,False,True)
     print("")
-    print("")
-    print_weather(x, effects=False)
+
 
 #print("lol")
 
